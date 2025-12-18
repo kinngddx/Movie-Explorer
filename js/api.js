@@ -25,6 +25,8 @@ async function searchMovies(search) {
 
 
     const url = `https://www.omdbapi.com//?s=${search}&apikey=78915f33`;
+
+    // testing
     console.log('api call kr')
 
  
@@ -37,12 +39,19 @@ async function searchMovies(search) {
     
     const data = await response.json()
 
-
+// testing
     console.log('api tested ')
+
+
+
     if(data.Response==='True'){
         return data.Search
     }else{
+
+        // testing
         console.log('No results ')
+        
+        
         return[]
     }
 
@@ -50,8 +59,12 @@ async function searchMovies(search) {
 }
 
 catch(error){
+
+    
+    // testing
     console.error('Error', error)
-        return[]
+    
+    return[]
     
 }
 

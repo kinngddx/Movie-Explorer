@@ -29,7 +29,7 @@ function setupSearchListener() {
         event.preventDefault()    //page reload nhi hoga  bhai bcz form hai n to reload ho jata hai
 
 
-        const searchTerm = searchInput.Value.trim()
+        const searchTerm = searchInput.value.trim()
 
 
         if(!searchTerm){

@@ -83,3 +83,94 @@ function attachCardClickListeners() {
     });
 }
 
+
+
+
+function showMovieDetails(movie) {
+    // Get modal elements from HTML
+    const modal = document.getElementById('movieModal');
+    const modalBody = document.getElementById('modalBody');
+    
+   //pehle dekh le poster exist krta ki nhi 
+    const posterUrl = movie.Poster !== 'N/A' 
+        ? movie.Poster 
+        : 'https://via.placeholder.com/300x450?text=No+Poster';
+    
+   //poster left me rhega and info right me rkhunga
+
+    const modalHTML = `
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            
+            <!-- Left side: Movie Poster -->
+            <div style="flex: 0 0 300px;">
+                <img src="${posterUrl}" 
+                     alt="${movie.Title}" 
+                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+            </div>
+            
+            <!-- Right side: Movie Information -->
+            <div style="flex: 1; min-width: 300px;">
+                
+                <!-- Title -->
+                <h2 style="margin: 0 0 15px 0; font-size: 32px;">
+                    ${movie.Title}
+                </h2>
+                
+                <!-- Quick Info: Rating, Year, Runtime -->
+                <p style="color: #b3b3b3; margin-bottom: 20px; font-size: 16px;">
+                    ⭐ <strong style="color: #ffd700;">${movie.imdbRating || 'N/A'}</strong>/10 | 
+                    📅 ${movie.Year} | 
+                    ⏱️ ${movie.Runtime}
+                </p>
+                
+                <!-- Plot Summary -->
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #e50914; margin-bottom: 10px;">Plot</h3>
+                    <p style="line-height: 1.6;">
+                        ${movie.Plot || 'No plot available.'}
+                    </p>
+                </div>
+                
+                <!-- Director -->
+                <p style="margin-bottom: 10px;">
+                    <strong style="color: #e50914;">Director:</strong> 
+                    ${movie.Director || 'N/A'}
+                </p>
+                
+                <!-- Actors -->
+                <p style="margin-bottom: 10px;">
+                    <strong style="color: #e50914;">Cast:</strong> 
+                    ${movie.Actors || 'N/A'}
+                </p>
+                
+                <!-- Genre -->
+                <p style="margin-bottom: 10px;">
+                    <strong style="color: #e50914;">Genre:</strong> 
+                    ${movie.Genre || 'N/A'}
+                </p>
+                
+                <!-- Language -->
+                <p style="margin-bottom: 10px;">
+                    <strong style="color: #e50914;">Language:</strong> 
+                    ${movie.Language || 'N/A'}
+                </p>
+                
+                <!-- Box Office (if available) -->
+                ${movie.BoxOffice ? `
+                    <p style="margin-bottom: 10px;">
+                        <strong style="color: #e50914;">Box Office:</strong> 
+                        ${movie.BoxOffice}
+                    </p>
+                ` : ''}
+                
+            </div>
+        </div>
+    `;
+    
+    
+    modalBody.innerHTML = modalHTML;
+   
+    modal.classList.add('active');
+}
+
+

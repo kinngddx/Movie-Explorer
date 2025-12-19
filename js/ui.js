@@ -3,10 +3,8 @@
 
 function displayMovies(movies){
     const movieGrid = document.getElementById('movieGrid')
-
-    moviegrid.innerHTML = ''
+    movieGrid.innerHTML = ''
     
-
     if(movies.length===0){`
             <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
                 <h2>No movies found 🎬</h2>
@@ -17,7 +15,6 @@ function displayMovies(movies){
         
    return
     }
-
 
     movies.forEach(movie =>{
 
@@ -38,17 +35,13 @@ function displayMovies(movies){
 
 
 movieGrid.innerHTML += cardHTML;
-
 })
 
- attachCardClickListeners();
-
-
-    
+ attachCardClickListeners(); 
 }
 
 function attachCardClickListeners() {
- 
+
 
     //sare elements yaha se nikal lunga mai
     const cards = document.querySelectorAll('.movie-card');
@@ -62,7 +55,7 @@ function attachCardClickListeners() {
             
             console.log('Card clicked! Movie ID:', imdbID);
             
-       
+       //yaha pr 0.7 seconds ke liye proces krega
             card.style.opacity = '0.7';
             card.style.cursor = 'wait';
             
@@ -169,8 +162,93 @@ function showMovieDetails(movie) {
     
     
     modalBody.innerHTML = modalHTML;
-   
     modal.classList.add('active');
 }
 
+function closeModal() {
+    
+    const modal = document.getElementById('movieModal');
+    
+    modal.classList.remove('active');
+}
 
+
+function addToHistory(searchTerm) {
+  
+    if (!searchTerm || searchTerm.trim() === '') {
+        return;
+    }
+    
+    
+    searchTerm = searchTerm.trim().toLowerCase();
+    
+    let history = localStorage.getItem('searchHistory');
+    history = history ? JSON.parse(history) : [];
+  
+    if (history.includes(searchTerm)) {
+        history = history.filter(term => term !== searchTerm);
+    }
+    
+   
+
+    //recent history top pr show hoga humesha
+    history.unshift(searchTerm);
+
+    //isse max 5 ya jitna chaho utna history hi visible krwaynege
+    history = history.slice(0, CONFIG.MAX_HISTORY);
+    
+    localStorage.setItem('searchHistory', JSON.stringify(history));
+    
+    displayHistory();
+    
+    console.log('Added to history:', searchTerm);
+}
+
+
+
+
+
+function displayHistory() {
+    //  history list element from HTML nikalana hai
+    const historyList = document.getElementById('historyList');
+    
+    //history ko local storage se niklana padega
+    let history = localStorage.getItem('searchHistory');
+    history = history ? JSON.parse(history) : [];
+    
+    historyList.innerHTML = '';
+    
+   
+    if (history.length === 0) {
+        historyList.innerHTML = `
+            <li style="color: #666; padding: 10px; text-align: center;">
+                No recent searches
+            </li>
+        `;
+        return;
+    }
+    
+    
+    history.forEach(term => {
+        
+        const li = document.createElement('li');
+        li.className = 'history-item';
+        li.textContent = term;
+        
+        // Add click listener to re-search this term
+        li.addEventListener('click', () => {
+            console.log('Re-searching from history:', term);
+            
+            
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = term;
+            
+            const searchForm = document.getElementById('searchForm');
+            searchForm.dispatchEvent(new Event('submit'));
+        });
+        
+       
+        historyList.appendChild(li);
+    })
+
+}

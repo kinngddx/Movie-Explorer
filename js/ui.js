@@ -1,7 +1,8 @@
-//for dom ke liye sochunga yaha
+//for dom ke liye sochunga yaha dom manipulation - creathe and update krunga html elements
+
 
 function displayMovies(movies){
-    const moviegrid = document.getElementById('moviegrid')
+    const movieGrid = document.getElementById('movieGrid')
 
     moviegrid.innerHTML = ''
     
@@ -21,6 +22,8 @@ function displayMovies(movies){
     movies.forEach(movie =>{
 
         const posterUrl = movie.Poster !=='N/A' 
+        ? movie.Poster
+        :'https://via.placeholder.com/300x450?text=No+Poster'
 
         const cardHTML = `
     <article class="movie-card" data-imdb-id="${movie.imdbID}">
@@ -31,26 +34,52 @@ function displayMovies(movies){
         </div>
     </article>
 `;
+
+
+
 movieGrid.innerHTML += cardHTML;
 
-    })
+})
 
-    function attachCardClickListeners(){
-        const cards = document.querySelectorAll('.movie-card')
-    };
-
-
-
-
-
-   
-const posterUrl = movie.Poster !== 'N/A' 
-    ? movie.Poster 
-    : 'https://via.placeholder.com/300x450?text=No+Poster';
-
-    
+ attachCardClickListeners();
 
 
     
+}
+
+function attachCardClickListeners() {
+ 
+
+    //sare elements yaha se nikal lunga mai
+    const cards = document.querySelectorAll('.movie-card');
+    
+    
+    cards.forEach(card => {
+        
+        card.addEventListener('click', async () => {
+         
+            const imdbID = card.dataset.imdbId;
+            
+            console.log('Card clicked! Movie ID:', imdbID);
+            
+       
+            card.style.opacity = '0.7';
+            card.style.cursor = 'wait';
+            
+         
+            const movie = await getMovieDetails(imdbID);
+            
+      
+            card.style.opacity = '1';
+            card.style.cursor = 'pointer';
+            
+          //agr movie milla ot kaam krega
+            if (movie) {
+                showMovieDetails(movie);
+            } else {
+                alert('Failed to load movie details. Try again!');
+            }
+        });
+    });
 }
 
